@@ -1,0 +1,232 @@
+/* The fixed Google Home toolbar sits above the grid's ancestor stacking context. */
+ghw-home:has(ghw-cameras-grid-view > .grid[data-ghcg-active]) > ghw-toolbar {
+  visibility: hidden !important;
+}
+
+ghw-cameras-grid-view > .grid[data-ghcg-active] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000 !important;
+  display: grid !important;
+  grid-template-columns: repeat(var(--ghcg-columns, 1), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--ghcg-rows, 1), minmax(0, 1fr));
+  gap: 0;
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: #101216;
+}
+
+[data-ghcg-active] > .grid__column {
+  display: contents !important;
+}
+
+[data-ghcg-active] .grid__item[data-ghcg-hidden] {
+  display: none !important;
+}
+
+[data-ghcg-active] .grid__item[data-ghcg-tile] {
+  order: var(--ghcg-order);
+  box-sizing: border-box;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  background: #08090b;
+}
+
+[data-ghcg-active] .grid__item[data-ghcg-tile],
+[data-ghcg-active] .grid__item[data-ghcg-tile] ghw-mini-player {
+  border-radius: 0 !important;
+}
+
+[data-ghcg-active] .grid__item[data-ghcg-tile] ghw-mini-player,
+[data-ghcg-active] .grid__item[data-ghcg-tile] .tile-container,
+[data-ghcg-active] .grid__item[data-ghcg-tile] ghw-stream-player {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+}
+
+[data-ghcg-active] .grid__item[data-ghcg-tile] video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: var(--ghcg-fit, contain) !important;
+}
+
+.ghcg-controls {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1001;
+  font: 14px/1.35 system-ui, sans-serif;
+  color-scheme: dark;
+  color: #eff2f8;
+}
+
+[data-ghcg-active] > .ghcg-controls {
+  --ghcg-dock-target: 26px;
+  position: absolute;
+  inset: 4px 4px auto auto;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 1px;
+  border: 1px solid #f2f7ff65;
+  border-radius: 8px;
+  background:
+    linear-gradient(155deg, #f4f9ff42, #e1ecff12 44%, #f4f9ff1c),
+    #10192a58;
+  backdrop-filter: blur(12px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 #fff7,
+    inset 0 -1px 0 #10203532,
+    0 2px 8px #0005;
+}
+
+.ghcg-controls button {
+  min-height: 32px;
+  padding: 4px 10px;
+  border: 1px solid #555e71;
+  border-radius: 6px;
+  background: #202634;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+[data-ghcg-active] > .ghcg-controls > button {
+  display: grid;
+  place-items: center;
+  width: var(--ghcg-dock-target);
+  height: var(--ghcg-dock-target);
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  filter: drop-shadow(0 1px 1px #000a);
+}
+
+[data-ghcg-active] > .ghcg-controls > button:hover,
+[data-ghcg-active] > .ghcg-controls > button[aria-expanded="true"],
+[data-ghcg-active] > .ghcg-controls > button[aria-pressed="true"] {
+  background: #eaf2ff26;
+}
+
+[data-ghcg-active] > .ghcg-controls > button::before {
+  content: "";
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+[data-ghcg-active] > .ghcg-controls > [data-ghcg-icon="cameras"]::before {
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: currentColor;
+  box-shadow: 8px 0, 0 8px, 8px 8px;
+  transform: translate(-4px, -4px);
+}
+
+[data-ghcg-active] > .ghcg-controls > [data-ghcg-icon="fullscreen"]::before {
+  border: 2px solid currentColor;
+  mask-image:
+    linear-gradient(90deg, #000 35%, transparent 35% 65%, #000 65%),
+    linear-gradient(#000 35%, transparent 35% 65%, #000 65%);
+  mask-composite: intersect;
+}
+
+[data-ghcg-active] > .ghcg-controls > [data-ghcg-icon="layout"]::before {
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  box-shadow: inset 0 3px 0 -2px currentColor;
+}
+
+.ghcg-controls button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.ghcg-controls button:focus-visible,
+.ghcg-panel input:focus-visible {
+  outline: 2px solid #a6c9ff;
+  outline-offset: 2px;
+}
+
+.ghcg-status {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 5px);
+  width: max-content;
+  max-width: calc(100vw - 3 * var(--ghcg-dock-target) - 20px);
+  box-sizing: border-box;
+  padding: 4px 7px;
+  border-radius: 6px;
+  background: #111722e8;
+  overflow-wrap: anywhere;
+}
+
+.ghcg-status:empty,
+.ghcg-controls [hidden] {
+  display: none !important;
+}
+
+.ghcg-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  box-sizing: border-box;
+  width: min(360px, calc(100vw - 8px));
+  max-height: min(70vh, 480px);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid #555e71;
+  border-radius: 8px;
+  background: #171c26;
+  box-shadow: 0 12px 32px #0008;
+}
+
+.ghcg-panel ul {
+  padding: 0;
+  margin: 0 0 10px;
+  list-style: none;
+}
+
+.ghcg-panel li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 38px;
+}
+
+.ghcg-panel label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ghcg-panel li label {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.ghcg-panel button {
+  padding-inline: 8px;
+}
+
+@media (pointer: coarse) {
+  [data-ghcg-active] > .ghcg-controls {
+    --ghcg-dock-target: 44px;
+  }
+}

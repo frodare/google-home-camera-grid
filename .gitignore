@@ -1,0 +1,6 @@
+/.DS_Store
+/dist/
+/icon-concepts/*
+!/icon-concepts/generated-v2/
+/icon-concepts/generated-v2/*
+!/icon-concepts/generated-v2/03-grid-lens-transparent.png
